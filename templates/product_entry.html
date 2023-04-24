@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    {% if action and action == 'create' %}
+        Add New Product
+    {% elif action and action == 'update'  %}
+        Update Product
+    {% endif %}
+{% endblock %}
+
+{% block page_head %}
+    {% if action and action == 'create' %}
+        Add New Product
+    {% elif action and action == 'update'  %}
+        Update Product
+    {% endif %}
+{% endblock %}
+
+{% block page_content %}
+
+{% if action and action in ['create', 'update'] %}
+<form class="row g-4"
+      action="{{ url_for('product_edit', product_id=product['product_id']) if product else url_for('product_create') }}"
+      enctype="multipart/form-data" method="post">
+{% else %}
+    <div class="row g-4">
+{% endif %}
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_name" class="form-label">{% endif %}
+        <strong>Product Name</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+  <div class="col-md-10">
+    {% if action and action in ['create', 'update'] %}
+    <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product['product_name'] if product else '' }}" required>
+    {% else %}
+        {{ product['product_name'] }}
+    {% endif %}
+  </div>
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_category_id" class="form-label">{% endif %}
+        <strong>Product Category</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+  <div class="col-md-10">
+    {% if action and action in ['create', 'update'] %}
+    <select name="product_category_id" id="product_category_id" class="form-select form-select-md" aria-label=".form-select-md example">
+        <option value="0">---Select A Product Category---</option>
+        {% for each_category in product_categories %}
+        <option value="{{ each_category['category_id'] }}"
+                {{ 'selected' if product and each_category['category_id'] == product['category_id'] else ''}}>{{ each_category['category_name'] }}</option>
+        {% endfor %}
+    </select>
+    {% else %}
+        {{ product['product_name'] }}
+    {% endif %}
+  </div>
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_code" class="form-label">{% endif %}
+        <strong>Product Code</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+    <div class="col-md-10">
+    {% if action and action in ['create', 'update'] %}
+    <input type="text" class="form-control" id="product_code" name="product_code" value="{{ product['product_code'] if product else '' }}" required>
+    {% else %}
+        {{ product['product_code'] }}
+    {% endif %}
+  </div>
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_description" class="form-label">{% endif %}
+        <strong>Product Description</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+    <div class="col-md-10">
+    {% if action and action in ['create', 'update'] %}
+    <textarea class="form-control" rows="5" id="product-description" name="product_description">{{ product['product_description'] if product else '' }}</textarea>
+    {% else %}
+        {{ product['product_description'] }}
+    {% endif %}
+  </div>
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_code" class="form-label">{% endif %}
+        <strong>Product Price</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+    <div class="col-md-10">
+    {% if action and action in ['create', 'update'] %}
+    <input type="number" step="0.01" class="form-control" id="product_price" name="product_price" value="{{ "%.2f"|format(product['product_price']) if product else '' }}" required>
+    {% else %}
+        {{ "$%.2f"|format(product['product_price']) }}
+    {% endif %}
+  </div>
+
+  <div class="col-md-2">
+    {% if action and action in ['create', 'update'] %}<label for="product_image" class="form-label">{% endif %}
+        <strong>Product Image</strong>
+    {% if action and action in ['create', 'update'] %}</label>{% endif %}
+  </div>
+  <div class="col-md-10">
+    {% if (not action) or action not in ['create', 'update']  %}
+        <img class="mb-3" src="{{ url_for('static', filename='/products/' + product['product_image']) }}" alt="Picture of {{ product['product_name'] }}">
+    {% else %}
+        {% if action in ['update'] and product['product_image'] != '' %}
+            <img class="mb-3" src="{{ url_for('static', filename='/products/' + product['product_image']) }}" alt="Picture of {{ product['product_name'] }}">
+        {% endif %}
+        {% if action in ['create','update'] %}
+            <input type="file" class="form-control" id="product_image" name="product_image">
+        {% endif %}
+        {% if action in ['update'] and product['product_image'] != '' %}
+            <input class="form-check-input" type="checkbox" value="" id="delete_product_image" name="delete_product_image">
+            <label class="form-check-label" for="delete_product_image"></label> <strong>Delete product image without providing a replacement</strong>
+        {% endif %}
+  {% endif %}
+  </div>
+
+  <div class="col-12 text-center">
+    {% if action and action in ['create', 'update'] %}
+    <button class="btn btn-primary" type="submit">{{ 'Add' if action=='create' else 'Update' }} Product</button>
+    {% endif %}
+
+    {% if current_user.role in ['ADMIN'] %}
+    <a href="{{ url_for('product_view_all') }}" class="btn btn-secondary" role="button">
+        {% if action and action in ['create', 'update'] %}
+        Cancel
+        {% else %}
+        Return
+        {% endif %}
+    </a>
+    {% endif %}
+  </div>
+
+{% if action and action in ['create', 'update'] %}
+</form>
+{% else %}
+    </div>
+{% endif %}
+{% endblock %}
+
+

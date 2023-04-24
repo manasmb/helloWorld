@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Checkout
+{% endblock %}
+
+{% block page_head %}
+    Checkout
+{% endblock %}
+
+{% block page_content %}
+   <div class="row">
+	<div class="col-lg-8">
+		<h3 class="bold">
+			Shipping Information
+		</h3>
+
+		<div class="panel panel-primary">
+			<form method="POST" action="{{ url_for('process_order') }}">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">Personal Information</h4>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="form-group required">
+                            <label for="first_name" class="form-label"><strong>First Name</strong></label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" maxlength="30" required>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="form-label"><strong>Phone Number</strong></label>
+                            <input type="text" class="form-control" id="phone" name="phone" maxlength="10" required>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+                            <label for="last_name" class="form-label"><strong>Last Name</strong></label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" maxlength="50" required>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="form-label"><strong>Email</strong></label>
+                            <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">Address</h4>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="address" class="form-label"><strong>Address</strong></label>
+                            <input type="text" class="form-control" id="address" name="address" maxlength="100" required>
+						</div>
+						<div class="form-group">
+							<label for="state" class="form-label"><strong>State</strong></label>
+                            <input type="text" class="form-control" id="state" name="state" maxlength="2" required>
+						</div>
+
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="city" class="form-label"><strong>City</strong></label>
+                            <input type="text" class="form-control" id="city" name="city" maxlength="100" required>
+						</div>
+						<div class="form-group">
+							<label for="zip" class="form-label"><strong>Zip Code</strong></label>
+                            <input type="text" class="form-control" id="zip" name="zip" maxlength="9" required>
+
+						</div>
+					</div>
+				</div>
+
+                <!--
+                Future Enhancement: Taking payment
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">Payment</h4>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Payment Option</label>
+
+						</div>
+					</div>
+				</div>
+				-->
+			</div>
+
+			<div class="panel-footer mt-3">
+				<button type="submit" class="btn btn-primary btn-sm">
+					Submit My Order
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<h3 class="bold">
+			<i class="glyphicon glyphicon-th-list"></i> Cart Details
+		</h3>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p>{{ cart_count }} Item{{ 's' if cart_count != 1 else '' }} | FREE Shipping!</p>
+                <ul>
+                    {% for each_product in products %}
+                        <li>{{ each_product['product_quantity'] }} {{ each_product['product_name'] }}</li>
+
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="list-group-item">
+                <p>Total <strong class="pull-right">{{ "${:,.2f}".format(cart_total) }}</strong></p>
+            </li>
+        </ul>
+	</div>
+</div>
+{% endblock %}

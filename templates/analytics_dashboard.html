@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Analytics Dashboard
+{% endblock %}
+
+{% block page_head %}
+    Analytics Dashboard
+{% endblock %}
+
+{% block page_content %}
+
+    <p>This dashboard is intended to show how TerpStore is doing.</p>
+
+    <h3>Products</h3>
+    <div class="row">
+        <div class="col-12">
+            <div class="row d-flex justify-content-center">
+                <div class="col-10" id="product_counts_graph"></div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Orders</h3>
+    <div class="row d-flex justify-content-center">
+        <div class="col-6" id="orders_past_30_graph"></div>
+        <div class="col-6" id="orders_by_state_graph"></div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 row d-flex justify-content-center" id="orders_by_date_graph"></div>
+    </div>
+
+    <script>
+        Plotly.newPlot('product_counts_graph', JSON.parse('{{ product_counts_graph|safe }}'));
+        Plotly.newPlot('orders_by_state_graph', JSON.parse('{{ orders_by_state_graph|safe }}'));
+        Plotly.newPlot('orders_past_30_graph', JSON.parse('{{ orders_past_30_graph|safe }}'));
+        Plotly.newPlot('orders_by_date_graph', JSON.parse('{{ orders_by_date_graph|safe }}'));
+    </script>
+
+
+
+{% endblock %}
+
+
