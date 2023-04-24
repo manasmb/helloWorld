@@ -402,7 +402,7 @@ def analytics_dashboard():
     orders_by_state_figure = px.pie(df_orders_by_state, names='states', labels=labels, values='order_counts', title='All Orders Segmented by State',
             color_discrete_sequence=px.colors.qualitative.Antique)
 
-    orders_by_state_figure.update_traces(textposition='inside', textinfo='label+percent', textfont_size=16)
+    orders_by_state_figure.update_traces(textposition='inside', textinfo='label+percent', textfont_size=16, sort=False)
     orders_by_state_figure.update_layout(
         title={'x': 0.5}
     )
@@ -417,7 +417,7 @@ def analytics_dashboard():
     fig.update_traces(textposition='inside', textinfo='label+percent', textfont_size=16)
     fig.update_layout(
         title={'x': 0.5})
-    orders_by_state_figureJSON = fig.to_json()
+    orders_by_state_figureJSON = orders_by_state_figure.to_json()
 
 
     # Orders by Month (Example of a Custom SQL Query for SQLite)
